@@ -6,7 +6,7 @@ from aqt import gui_hooks
 from aqt.qt import *
 from aqt.utils import tooltip
 from aqt.browser import Browser
-
+from math import floor
 
 ######################################################################
 # Utils
@@ -88,12 +88,12 @@ def mergeSelectedCardFields(cids: list) -> None:
     cards = sorted(cards, key=OrderingChoices.getKey(config['ordering']), reverse=config['reverse_order'])
     notes = [card.note() for card in cards]
 
-    for i in range(len(cids) / 2):
+    for i in range(floor(len(cids) / 2)):
         addSecondToFirst(notes[i * 2], notes[i * 2 + 1])
 
     if config['delete_original_notes'] is True:
         del_notes = []
-        for i in range(len(cids) / 2):
+        for i in range(floor(len(cids) / 2)):
             del_notes.append(notes[i * 2 + 1].id)
         mw.col.remNotes(del_notes)
 
