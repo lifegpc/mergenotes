@@ -88,12 +88,14 @@ def mergeSelectedCardFields(cids: list) -> None:
     cards = sorted(cards, key=OrderingChoices.getKey(config['ordering']), reverse=config['reverse_order'])
     notes = [card.note() for card in cards]
 
-    # Iterate till 1st element and keep on decrementing i
-    for i in reversed(range(len(cids) - 1)):
-        addSecondToFirst(notes[i], notes[i + 1])
+    for i in range(len(cids) / 2):
+        addSecondToFirst(notes[i * 2], notes[i * 2 + 1])
 
     if config['delete_original_notes'] is True:
-        mw.col.remNotes([note.id for note in notes][1:])
+        del_notes = []
+        for i in range(len(cids) / 2):
+            del_notes.append(notes[i * 2 + 1].id)
+        mw.col.remNotes(del_notes)
 
 
 def onBrowserMergeCards(browser: Browser) -> None:
